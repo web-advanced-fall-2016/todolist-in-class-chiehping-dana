@@ -11,20 +11,26 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 var initialData = [{
-        "name": "item-1",
+        "name": "Awesome Apple Yo",
         "id": 0, 
         "description" : "apple"
     },
     {
-        "name": "item-2",
+        "name": "Bodacious Banana Man",
         "id": 1, 
         "description": "banana"
     },
     {
-        "name": "item-3",
+        "name": "Original Orange Friend",
         "id": 2,
         "description" : "orange"
+    },
+    {
+        "name": "Gargantuous Grapefruit Party",
+        "id": 3,
+        "description" : "grapefruit"
     }
+
 ];
 
 

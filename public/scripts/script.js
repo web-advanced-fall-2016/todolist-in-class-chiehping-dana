@@ -1,5 +1,16 @@
 var baseURL = "http://localhost:8080";
 console.log('here');
+var initialItems = [];
+var listOne = document.getElementById("one");
+
+window.onload = function() {
+test();
+ test2();
+ 
+};
+
+
+
 function test() {
     let config = {
         method: 'GET',
@@ -18,6 +29,13 @@ function test() {
         .then(function(res) {
             // populatestudentID(res);
             console.log(res);
+
+            for (i=0;i<res.length;i++) {
+              console.log(res[i]);
+              initialItems.push(res[i]);
+            }
+            console.log("Initial Items are: " + initialItems[0].description);
+            createList();
         })
 
     .catch(function(err) {
@@ -51,9 +69,8 @@ function test2() {
         console.log(err);
     });
 }
+ // listOne.innerHTML = initialItems[0];
 
- test();
- test2();
 
 
 // Create a "close" button and append it to each list item
@@ -85,10 +102,45 @@ list.addEventListener('click', function(ev) {
   }
 }, false);
 
+
+function createList() {
+  console.log("creatinglist...");
+  var list = document.querySelector('ul');
+  // var li = document.createElement('li');
+
+
+
+
+  for (item of initialItems) {
+    list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
+  }
+
+  
+}
+
+//1 = Get The Initial Items Array to Show Up as List Items on Client
+//2 = Create Add Item Function that adds a new item to array in the
+//server with name = whatever in input box, id = next id in series (1, 2, 3)
+//3 = Create a Remove Item Function that finds an item by its id in the
+//server array and remove it
+//4 - Make sure there is function that refreshes the list in the client
+//so that always showing the up to date array in server
+
+
+
+
+
+
+
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
+  var inputValue;
+
+  for (i=0;i<initialItems.length;i++) {
+    inputValue = initialItems[1].name;
+  }
+
   var t = document.createTextNode(inputValue);
   li.appendChild(t);
   if (inputValue === '') {
