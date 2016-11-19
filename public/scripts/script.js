@@ -1,14 +1,48 @@
 var baseURL = "http://localhost:8080";
 console.log('here');
 var initialItems = [];
+var updatedList = [];
 var listOne = document.getElementById("one");
+var newItem;
 
 window.onload = function() {
-test();
- test2();
- 
+    test();
+    test2();
+
 };
 
+
+function test3(data) {
+  $.ajax({
+    type: "POST",
+    url: baseURL + '/api1',
+    data: data,
+    success: console.log(data + "was sent to server")
+  });
+
+  let config = {
+        method: 'GET',
+        headers: new Headers({}),
+    };
+  let request = new Request(`${baseURL}/api1`, config);
+  fetch(request)
+        .then(function(res) {
+            if (res.status == 200)
+                return res.json();
+            else
+                throw new Error('Something went wrong on api server!');
+        })
+        .then(function(res) {
+            console.log("The result is" + res);
+            refreshList(res);
+        })
+
+    .catch(function(err) {
+        console.warn(`Couldn't fetch info list`);
+        console.log(err);
+    });
+
+}
 
 
 function test() {
@@ -30,9 +64,9 @@ function test() {
             // populatestudentID(res);
             console.log(res);
 
-            for (i=0;i<res.length;i++) {
-              console.log(res[i]);
-              initialItems.push(res[i]);
+            for (i = 0; i < res.length; i++) {
+                console.log(res[i]);
+                initialItems.push(res[i]);
             }
             console.log("Initial Items are: " + initialItems[0].description);
             createList();
@@ -69,7 +103,6 @@ function test2() {
         console.log(err);
     });
 }
- // listOne.innerHTML = initialItems[0];
 
 
 
@@ -77,45 +110,41 @@ function test2() {
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("\u00D7");
+    span.className = "close";
+    span.appendChild(txt);
+    myNodelist[i].appendChild(span);
 }
 
 // Click on a close button to hide the current list item
 var close = document.getElementsByClassName("close");
 var i;
 for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
+    close[i].onclick = function() {
+        var div = this.parentElement;
+        div.style.display = "none";
+    }
 }
 
 // Add a "checked" symbol when clicking on a list item
 var list = document.querySelector('ul');
 list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
+    if (ev.target.tagName === 'LI') {
+        ev.target.classList.toggle('checked');
+    }
 }, false);
 
 
 function createList() {
-  console.log("creatinglist...");
-  var list = document.querySelector('ul');
-  // var li = document.createElement('li');
+    console.log("creatinglist...");
+    var list = document.querySelector('ul');
+    // var li = document.createElement('li');
 
+    for (item of initialItems) {
+        list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
+    }
 
-
-
-  for (item of initialItems) {
-    list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
-  }
-
-  
 }
 
 //1 = Get The Initial Items Array to Show Up as List Items on Client
@@ -126,40 +155,61 @@ function createList() {
 //4 - Make sure there is function that refreshes the list in the client
 //so that always showing the up to date array in server
 
-
-
-
-
-
+function refreshList(data) {
+  updatedList = data;
+  console.log("new list refresh");
+  var list = document.querySelector('ul');
+  list.innerHTML = "";
+    for (item of updatedList) {
+        list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
+    } 
+      // console.log("refreshing list...");
+      // console.log(data);
+      // var list = document.querySelector('ul');
+      // var text = document.createTextNode(data.name);
+      // var item = document.createElement("li");
+      // item.append(text);
+      // item.id = data.id;
+      // list.appendChild(item);
+}
 
 // Create a new list item when clicking on the "Add" button
 function newElement() {
-  var li = document.createElement("li");
-  var inputValue;
+    var li = document.createElement("li");
+    var inputValue = document.getElementById("myInput").value;
+    var nextID = parseInt(document.getElementById("myUL").lastChild.id) + 1;
+    
+    console.log(nextID);
 
-  for (i=0;i<initialItems.length;i++) {
-    inputValue = initialItems[1].name;
-  }
-
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
-
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
+    if (inputValue === '') {
+        alert("You must write something!");
+    } else {
+          newItem = { name: inputValue, id: nextID, description: "Kill me now." };
+          test3(newItem);
+          console.log(nextID);
+        // document.getElementById("myUL").appendChild(li);
     }
-  }
+
+
+    // var t = document.createTextNode(inputValue);
+    // li.appendChild(t);
+    // if (inputValue === '') {
+    //     alert("You must write something!");
+    // } else {
+    //     document.getElementById("myUL").appendChild(li);
+    // }
+    // document.getElementById("myInput").value = "";
+
+    // var span = document.createElement("SPAN");
+    // var txt = document.createTextNode("\u00D7");
+    // span.className = "close";
+    // span.appendChild(txt);
+    // li.appendChild(span);
+
+    // for (i = 0; i < close.length; i++) {
+    //     close[i].onclick = function() {
+    //         var div = this.parentElement;
+    //         div.style.display = "none";
+    //     }
+    // }
 }

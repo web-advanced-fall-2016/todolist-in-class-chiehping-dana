@@ -55,7 +55,27 @@ app.use(function(req, res, next) {
 
 app.use('/api' , function(req,res,next){
 	res.json(initialData);
-} );
+    next();
+});
+
+app.post('/api1', function(req, res){
+   console.log(req.body);
+   initialData.push(req.body);
+   console.log(initialData);
+});
+
+
+app.get('/api1', function(req,res,next){
+    res.json(initialData);
+    console.log(initialData);
+
+    // let result = res.json;
+    // initialData.push(result);
+    // console.log(result);
+    // console.log("testing" + initialData)
+    // console.log("testing" + initialData[4]);
+})
+
 
 app.use('/apio' , function(req,res,next){
 	res.json({message:"success"});
