@@ -6,9 +6,9 @@ var listOne = document.getElementById("one");
 var newItem;
 
 window.onload = function() {
+    // addEventListener();
     test();
     test2();
-
 };
 
 
@@ -68,8 +68,8 @@ function test() {
                 console.log(res[i]);
                 initialItems.push(res[i]);
             }
-            console.log("Initial Items are: " + initialItems[0].description);
             createList();
+            createCloseButton();
         })
 
     .catch(function(err) {
@@ -104,36 +104,40 @@ function test2() {
     });
 }
 
+function deleteFromServer(id) {
+  $.ajax({
+    type: "POST",
+    url: baseURL + '/close',
+    data: {"id": id},
+    success: console.log(id + " was sent to server"),
+  });
+
+let config = {
+        method: 'GET',
+        headers: new Headers({}),
+    };
+
+    let request = new Request(`${baseURL}/close`, config);
+    fetch(request)
+        .then(function(res) {
+
+            if (res.status == 200)
+                return res.json();
+            else
+                throw new Error('Something went wrong on api server!');
+        })
+        .then(function(res) {
+            // populatestudentID(res);
+          refreshList(res);
+        })
+
+    .catch(function(err) {
+        console.warn(`Couldn't fetch info list`);
+        console.log(err);
+    });
 
 
-// Create a "close" button and append it to each list item
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-    var span = document.createElement("SPAN");
-    var txt = document.createTextNode("\u00D7");
-    span.className = "close";
-    span.appendChild(txt);
-    myNodelist[i].appendChild(span);
 }
-
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-        var div = this.parentElement;
-        div.style.display = "none";
-    }
-}
-
-// Add a "checked" symbol when clicking on a list item
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-    if (ev.target.tagName === 'LI') {
-        ev.target.classList.toggle('checked');
-    }
-}, false);
 
 
 function createList() {
@@ -144,6 +148,28 @@ function createList() {
     for (item of initialItems) {
         list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
     }
+
+  let config = {
+        method: 'GET',
+        headers: new Headers({}),
+    };
+  let request = new Request(`${baseURL}/api1`, config);
+  fetch(request)
+        .then(function(res) {
+            if (res.status == 200)
+                return res.json();
+            else
+                throw new Error('Something went wrong on api server!');
+        })
+        .then(function(res) {
+            console.log("The result is" + res);
+            refreshList(res);
+        })
+
+    .catch(function(err) {
+        console.warn(`Couldn't fetch info list`);
+        console.log(err);
+    });
 
 }
 
@@ -171,6 +197,7 @@ function refreshList(data) {
       // item.append(text);
       // item.id = data.id;
       // list.appendChild(item);
+      createCloseButton();
 }
 
 // Create a new list item when clicking on the "Add" button
@@ -184,7 +211,7 @@ function newElement() {
     if (inputValue === '') {
         alert("You must write something!");
     } else {
-          newItem = { name: inputValue, id: nextID, description: "Kill me now." };
+          newItem = { name: inputValue, id: nextID };
           test3(newItem);
           console.log(nextID);
         // document.getElementById("myUL").appendChild(li);
@@ -213,3 +240,76 @@ function newElement() {
     //     }
     // }
 }
+
+
+
+// Create a "close" button and append it to each list item
+
+function createCloseButton() {
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("\u00D7");
+    span.className = "close";
+    span.appendChild(txt);
+    myNodelist[i].appendChild(span);
+    span.addEventListener('click', function(ev) {
+      if (ev.target.parentElement.nodeName === 'LI') {
+        console.log(ev.target.parentElement.id);
+        let currentItem = ev.target.parentElement.id;
+        closeItem(currentItem);
+      }
+    })
+}
+}
+
+function closeItem(id){
+  console.log("the id of the thing to close is" + id);
+  deleteFromServer(id);
+
+}
+
+
+// function addEventListener() {
+//         var input = document.querySelector('input');
+//         input.addEventListener('input', handleInput, false);
+//         searchResults.addEventListener('click', function(evnt) {
+//             console.log(evnt.target.dataset.id);
+//             populateRecord(evnt.target.dataset.id);
+//         });
+
+//     }
+
+
+// function closeItem() {
+// var thisElement = 
+
+// var i;
+// for (i = 0; i < close.length; i++) {
+//     close[i].onclick = function() {
+//         var div = this.parentElement;
+//         div.style.display = "none";
+//         console.log(div);
+//     }
+// }
+
+
+// }
+
+// Click on a close button to hide the current list item
+//get the id of the thing clicked on
+//send a post request that deletes it
+//rerun the refresh list item
+
+
+
+
+
+// // Add a "checked" symbol when clicking on a list item
+// var list = document.querySelector('ul');
+// list.addEventListener('click', function(ev) {
+//     if (ev.target.tagName === 'LI') {
+//         ev.target.classList.toggle('checked');
+//     }
+// }, false);

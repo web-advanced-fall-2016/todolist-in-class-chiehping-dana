@@ -12,23 +12,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var initialData = [{
         "name": "Awesome Apple Yo",
-        "id": 0, 
-        "description" : "apple"
+        "id": 0
     },
     {
         "name": "Bodacious Banana Man",
-        "id": 1, 
-        "description": "banana"
+        "id": 1 
     },
     {
         "name": "Original Orange Friend",
-        "id": 2,
-        "description" : "orange"
+        "id": 2
     },
     {
         "name": "Gargantuous Grapefruit Party",
-        "id": 3,
-        "description" : "grapefruit"
+        "id": 3
     }
 
 ];
@@ -53,16 +49,56 @@ app.use(function(req, res, next) {
 //     res.json(initialData);   
 // });
 
-app.use('/api' , function(req,res,next){
+app.get('/api' , function(req,res,next){
 	res.json(initialData);
     next();
 });
 
-app.post('/api1', function(req, res){
+app.post('/api1', function(req, res, next){
    console.log(req.body);
    initialData.push(req.body);
    console.log(initialData);
 });
+
+app.post('/close', function(req, res, next){
+   console.log(req.body);
+   console.log(req.body.id);
+   removeItem(req.body.id);
+   console.log("removing " + req.body.id);
+   console.log(initialData);
+});
+app.get('/close', function(req,res,next){
+    res.json(initialData);
+    console.log(initialData);
+})
+
+function removeItem(id) {
+ 
+//Using Index Of Method -- Not Quite Working
+// initialData.splice(_.findIndex(initialData, function(item) {
+//     return item.id === id;
+// }), 1);
+
+
+//WORKING POORLY - Issue with Index vs. ID
+ initialData.splice(id,1);
+console.log("removed data is " + initialData);
+
+
+//Trying with Reg Exp -- DIDN"T WORK
+  // if(!id) {
+  //   return initialData;
+  // }
+
+  // let expression = new RegExp(id, 'i');
+  // for (item of initialData) {
+  //   if (expression.test(item.id)) {
+  //       initialData.splice(item,1);
+  //   }
+  // }
+  // return initialData;
+  // console.log(initialData);
+}
 
 
 app.get('/api1', function(req,res,next){
