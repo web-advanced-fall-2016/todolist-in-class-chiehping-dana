@@ -7,45 +7,15 @@ var newItem;
 
 window.onload = function() {
     // addEventListener();
-    test();
-    test2();
+    getInitialItems();
+    testConnection();
 };
 
 
-function test3(data) {
-  $.ajax({
-    type: "POST",
-    url: baseURL + '/api1',
-    data: data,
-    success: console.log(data + "was sent to server")
-  });
-
-  let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
-  let request = new Request(`${baseURL}/api1`, config);
-  fetch(request)
-        .then(function(res) {
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            console.log("The result is" + res);
-            refreshList(res);
-        })
-
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
-
-}
 
 
-function test() {
+
+function getInitialItems() {
     let config = {
         method: 'GET',
         headers: new Headers({}),
@@ -78,7 +48,7 @@ function test() {
     });
 }
 
-function test2() {
+function testConnection() {
     let config = {
         method: 'GET',
         headers: new Headers({}),
@@ -102,6 +72,38 @@ function test2() {
         console.warn(`Couldn't fetch info list`);
         console.log(err);
     });
+}
+
+function addItem(data) {
+  $.ajax({
+    type: "POST",
+    url: baseURL + '/api1',
+    data: data,
+    success: console.log(data + "was sent to server")
+  });
+
+  let config = {
+        method: 'GET',
+        headers: new Headers({}),
+    };
+  let request = new Request(`${baseURL}/api1`, config);
+  fetch(request)
+        .then(function(res) {
+            if (res.status == 200)
+                return res.json();
+            else
+                throw new Error('Something went wrong on api server!');
+        })
+        .then(function(res) {
+            console.log("The result is" + res);
+            refreshList(res);
+        })
+
+    .catch(function(err) {
+        console.warn(`Couldn't fetch info list`);
+        console.log(err);
+    });
+
 }
 
 function deleteFromServer(id) {
@@ -212,7 +214,7 @@ function newElement() {
         alert("You must write something!");
     } else {
           newItem = { name: inputValue, id: nextID };
-          test3(newItem);
+          addItem(newItem);
           console.log(nextID);
         // document.getElementById("myUL").appendChild(li);
     }

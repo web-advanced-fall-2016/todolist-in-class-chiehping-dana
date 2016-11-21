@@ -73,16 +73,27 @@ app.get('/close', function(req,res,next){
 })
 
 function removeItem(id) {
+  let tempArray = [];
  
 //Using Index Of Method -- Not Quite Working
 // initialData.splice(_.findIndex(initialData, function(item) {
 //     return item.id === id;
 // }), 1);
 
+// //Another Try
+for (item of initialData) {
+  tempArray = initialData.filter(function(item) {
+  return item.id != id;
+});
+}
+initialData = tempArray;
 
-//WORKING POORLY - Issue with Index vs. ID
- initialData.splice(id,1);
-console.log("removed data is " + initialData);
+
+
+
+// //WORKING POORLY - Issue with Index vs. ID
+//  initialData.splice(id,1);
+// console.log("removed data is " + initialData);
 
 
 //Trying with Reg Exp -- DIDN"T WORK
