@@ -12,19 +12,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var initialData = [{
         "name": "Awesome Apple Yo",
-        "id": 0
+        "id":0
     },
     {
         "name": "Bodacious Banana Man",
-        "id": 1 
+        "id":1 
     },
     {
         "name": "Original Orange Friend",
-        "id": 2
+        "id":2
     },
     {
         "name": "Gargantuous Grapefruit Party",
-        "id": 3
+        "id":3
     }
 
 ];
@@ -54,41 +54,77 @@ app.get('/api' , function(req,res,next){
     next();
 });
 
-app.post('/api1', function(req, res, next){
+app.post('/api1', function(req, res){
    console.log(req.body);
    initialData.push(req.body);
    console.log(initialData);
 });
 
-app.post('/close', function(req, res, next){
+app.post('/close', function(req, res){
    console.log(req.body);
    console.log(req.body.id);
    removeItem(req.body.id);
    console.log("removing " + req.body.id);
    console.log(initialData);
 });
-app.get('/close', function(req,res,next){
+app.get('/close', function(req,res){
     res.json(initialData);
     console.log(initialData);
 })
 
 function removeItem(id) {
-  let tempArray = [];
+  // let tempArray = [];
  
 //Using Index Of Method -- Not Quite Working
 // initialData.splice(_.findIndex(initialData, function(item) {
 //     return item.id === id;
 // }), 1);
 
-// //Another Try
-for (item of initialData) {
-  tempArray = initialData.filter(function(item) {
-  return item.id != id;
-});
+ // for (item of initialData){
+ // if (item.id == id) {
+ //      initialData = initialData.splice(item);
+ //        console.log('New list is: ' + initialData);
+ //    } else if (item.id != id) {
+ //        console.log(item + 'does not exit and can not be deleted');
+ //    }
+ //  }
+//  //  return initialData;
+// let tempArray = [];
+// for (item of initialData) {
+//   console.log("the item id's are" + item.id);
+//   console.log("the incoming id is " + id);
+//   if (item.id == id) {
+//     console.log("the item is: " + item.id + " " +item.name);
+//     tempArray = initialData.splice(item, 1); 
+//     console.log('New Array is' + tempArray);
+//     // reIndex(id, tempArray);
+//     initialData = initialData.slice(tempArray, 1);
+//   }
+// }
+//  return initialData;
+
+for(var i=0; i<initialData.length; i++){
+        if(initialData[i].id == id){
+            initialData.splice(id, 1);
+              //removes 1 element at position i 
+           reIndex(initialData[i], initialData);
+
+            break;
+        }
+    }
+
+console.log(initialData);
+
+//array to reIndex
+function reIndex(key, array) {
+  var result = [];
+  console.log("mew");
+  for (var key in array) {
+    result.push(array[key]);
+    return result;
+    console.log("the result is " + result);
+  }
 }
-initialData = tempArray;
-
-
 
 
 // //WORKING POORLY - Issue with Index vs. ID

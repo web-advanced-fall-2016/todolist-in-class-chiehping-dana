@@ -5,6 +5,20 @@ var updatedList = [];
 var listOne = document.getElementById("one");
 var newItem;
 
+
+// (function() {
+
+//     if (document.readyState != "loading") {
+//      testConnection();
+//     getInitialItems();
+//     } else {
+//         document.addEventListener('DOMContentLoaded', function() {
+//         testConnection();
+//     getInitialItems();
+//         }, false);
+//     }
+
+
 window.onload = function() {
     // addEventListener();
     getInitialItems();
@@ -110,8 +124,8 @@ function deleteFromServer(id) {
   $.ajax({
     type: "POST",
     url: baseURL + '/close',
-    data: {"id": id},
-    success: console.log(id + " was sent to server"),
+    data: {"id":id},
+    success: console.log(id + " was sent to server")
   });
 
 let config = {
@@ -185,6 +199,7 @@ function createList() {
 
 function refreshList(data) {
   updatedList = data;
+  console.log(updatedList);
   console.log("new list refresh");
   var list = document.querySelector('ul');
   list.innerHTML = "";
