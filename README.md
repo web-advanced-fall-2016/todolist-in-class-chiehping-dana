@@ -1,12 +1,5 @@
 # Dana & Chieh-Ping's Web To Do List
 
-Also, 
-
-don't forget documentation. You need to provide a README.md in your repository, detailing: 1) How to run and use your code, 2) It's features and how they work, 3) 3rd party libraries/tools that you used and didn't code your self. 4) last but not least, explain the process of Client/server interaction that your web application has.
-
-Best,
-Saman
-
 ## Features
 1. Load a Pre-Filled To Do List from Our Server with Suggestions of Important Items
 2. Add a new To Do Item
