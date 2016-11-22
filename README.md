@@ -1,45 +1,57 @@
-# Session 11 / in class exercise
+# Dana & Chieh-Ping's Web To Do List
 
-### Setup
+Also, 
 
-We are going to split into groups of two. Each team should collaborate to reach our goal. It's gonna be like the idea of [pair programming](https://en.wikipedia.org/wiki/Pair_programming). Engagement of both the students in coding is important. How to split the work is totally up to the teams (i.e. one person for front-end and the other for back-end). 
+don't forget documentation. You need to provide a README.md in your repository, detailing: 1) How to run and use your code, 2) It's features and how they work, 3) 3rd party libraries/tools that you used and didn't code your self. 4) last but not least, explain the process of Client/server interaction that your web application has.
 
-Start from planning. Before you jump into coding, take 5-10 minutes to define your approach and steps within your team. Maybe draw a simple sketch of your design. While one person is coding, the other team member is responsible to provoke ideas, make sure of code validity, recommend better ways of implementation or **most importantly ask questions if he/she doesn't understand something**.
+Best,
+Saman
 
-I will be roaming around between teams. You can ask me questions or Google them :). You **should** push your project to this repository before you leave the class.
+## Features
+1. Load a Pre-Filled To Do List from Our Server with Suggestions of Important Items
+2. Add a new To Do Item
+3. Delete a Completed To Do Item
+4. Refresh the page and retrieve your To Do List stored on the server whenever needed
 
-The base scaffold provided is nothing but the structure. Make your project as nice/functional as you can. But, **don't over complicate it**. Start with the minimal feasible goal and improve if you had time.
+##How to Run this Code
+Clone or download and unzip the contents of this folder onto your computer. 
 
-This is an opportunity to teach and learn together. Let's make it fun and productive.
+Before trying to run the code, you must download the following dependencies from NPM using the npm -install command.
+express    
+bodyParser
+path
 
-Assignment link [https://classroom.github.com/group-assignment-invitations/acc7a44eff55799f00ac98333add33e6](https://classroom.github.com/group-assignment-invitations/acc7a44eff55799f00ac98333add33e6)
+When all dependencies have been installed, navigate to the folder in terminal and type node server.js to start the server on localhost:8080.
 
-### Goal
+Open a web browser of your choice and navigate to http://localhost:8080 to check out website on your computer. Or check your IP address (running the server) and have a friend check out the website by entering http://YOURIPADDRESSSERVERISON:8080
 
-Your goal is to build a very simple Todo list application. Here are some examples:
+##Libraries, References & Styling
+We found an example of typical To Do list functionality regarding simple HTML and some client-side javascript for adding the close tags at: [W3Schools To Do List](http://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_todo)
 
-[https://github.com/component/todo](https://github.com/component/todo)
+We consulted our teacher's API example for help with GET and POST requests on the server side:
+[Student API Example Endpoints](https://github.com/web-advanced-fall-2016/students-api-endpoints)
 
-[http://dreamerslab.com/blog/en/write-a-todo-list-with-express-and-mongodb/](http://dreamerslab.com/blog/en/write-a-todo-list-with-express-and-mongodb/)
+We also consulted several Stack Exchange articles on how to splice items from a list in the correct way:
+[Remove Item from Array by Value](http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value)
+[Remove Array Element Based on Object Property](http://stackoverflow.com/questions/15287865/remove-array-element-based-on-object-property)
+[How to Delete an Iterm from an Array of Objects](http://stackoverflow.com/questions/5629914/how-to-delete-an-item-from-array-of-objects)
 
-Provided within this repository is a basic scaffold that includes an `express` application that runs a serve on `localhost:3000`. Run the server with: `npm start`. Build your application on tip of this scaffold.
+### Client-Server Interaction
 
-You are allowed to use third party libraries/tools like JQuery/Bootstrap.
+We have created a server with different API endpoints for our requests (/api, /api1 and /close). We also set up "/apio" as a connection test.
 
-#### Required features
+Our To Do List retrieves an array of initial To Do List Items from the server at /api, each having a name and ID starting at 0. It then triggers a function on the client side to create a new list on the website using the data from this intial To Do List Array, and giving each list item the ID of the item from the server.
 
-- Add new item.
-- Remove existing items.
-- Viewer should be able to see all the existing items.
-- Each Item should at least have a description.
-- List should be persistent upon reloading the page. In other words, it should be persistent as long as the server instance is running.
+When adding a list item, a function is called upon hitting the "add" button via a "click" event listener. When clicked, this button triggers a POST request to the server at /api, triggering a function to push the data sent over (as an object) to the end of the Initial Data array. When successful, it responds back to the client and triggers an updateList function which receives the new Initial Data array back from the server and redraws it on the web page. This way, the data on the client website always reflects the state of the Initial Data array on the server.
 
-#### Bonus features
+We similarly added an event listener for clicks on the X button to the right of each list item. When clicked, the button triggers a function that retrieves the id of its parent List Item and Posts it back to the server. The server then calls a function to take the sent ID, compare it against the ID's in the initial data list, and remove the list item with that ID. When successful, the server responds back to the client and the update list function is run again, changing the client websites displayed list to reflect the new state of the server's Initial Data array.
 
-- Update existing items.
-- Improve UX/UI by adding signifiers for successful save/remove/update of items on server.
-- Save the items on server. In other words, make it persistent. (Save it in a `.json` file or a database if interested/checkout `mongoose` )
+The full website is hosted by the server through a command to publish everything in our "public folder" (CSS, HTML, client-side javascript etc.)
 
+###Bugs & Things to Improve
 
+Right now there is some dysfunctionality when items are added to quickly or removed to quickly and the server hangs in pending. We think this is a synchronicity issue triggered by some of the calls and are looking into how to solve it.
 
+We'd also like to explore incorporating MongoDB and Mongoose and are planning to follow the following example to see if we can get it to work at a later date (since both of us want to work with servers for other classes): 
 
+[To Do App with Express.Js/Node.js & MongoDB](https://webapplog.com/todo-app-with-express-jsnode-js-and-mongodb/)
