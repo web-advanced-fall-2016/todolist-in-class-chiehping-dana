@@ -29,7 +29,7 @@ We also consulted several Stack Exchange articles on how to splice items from a 
 [Remove Array Element Based on Object Property](http://stackoverflow.com/questions/15287865/remove-array-element-based-on-object-property)
 [How to Delete an Iterm from an Array of Objects](http://stackoverflow.com/questions/5629914/how-to-delete-an-item-from-array-of-objects)
 
-### Client-Server Interaction
+## Client-Server Interaction
 
 We have created a server with different API endpoints for our requests (/api, /api1 and /close). We also set up "/apio" as a connection test.
 
@@ -41,7 +41,7 @@ We similarly added an event listener for clicks on the X button to the right of 
 
 The full website is hosted by the server through a command to publish everything in our "public folder" (CSS, HTML, client-side javascript etc.)
 
-###Bugs & Things to Improve
+##Bugs & Things to Improve
 
 Right now there is some dysfunctionality when items are added to quickly or removed to quickly and the server hangs in pending. We think this is a synchronicity issue triggered by some of the calls and are looking into how to solve it.
 

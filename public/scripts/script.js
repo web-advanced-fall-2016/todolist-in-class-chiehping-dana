@@ -5,7 +5,17 @@ var updatedList = [];
 var listOne = document.getElementById("one");
 var newItem;
 
+//Steps to Accomplish This
+//1 = Get The Initial Items Array to Show Up as List Items on Client -- DONE
+//2 = Create Add Item Function that adds a new item to array in the
+//server with name = whatever in input box, id = next id in series (1, 2, 3) -- DONE
+//3 = Create a Remove Item Function that finds an item by its id in the
+//server array and remove it -- DONE BUT BUGGY
+//4 - Make sure there is function that refreshes the list in the client
+//so that always showing the up to date array in server -- DONE
 
+
+//Why isn't this working with our code??? 
 // (function() {
 
 //     if (document.readyState != "loading") {
@@ -189,13 +199,7 @@ function createList() {
 
 }
 
-//1 = Get The Initial Items Array to Show Up as List Items on Client
-//2 = Create Add Item Function that adds a new item to array in the
-//server with name = whatever in input box, id = next id in series (1, 2, 3)
-//3 = Create a Remove Item Function that finds an item by its id in the
-//server array and remove it
-//4 - Make sure there is function that refreshes the list in the client
-//so that always showing the up to date array in server
+
 
 function refreshList(data) {
   updatedList = data;
