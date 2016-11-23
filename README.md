@@ -37,8 +37,11 @@ We consulted our teacher's API example for help with GET and POST requests on th
 [Student API Example Endpoints](https://github.com/web-advanced-fall-2016/students-api-endpoints)
 
 We also consulted several Stack Exchange articles on how to splice items from a list in the correct way:
+
 +[Remove Item from Array by Value](http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value)
+
 +[Remove Array Element Based on Object Property](http://stackoverflow.com/questions/15287865/remove-array-element-based-on-object-property)
+
 +[How to Delete an Iterm from an Array of Objects](http://stackoverflow.com/questions/5629914/how-to-delete-an-item-from-array-of-objects)
 
 ## Client-Server Interaction
