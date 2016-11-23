@@ -31,15 +31,15 @@ Open a web browser of your choice and navigate to
 '''http://localhost:8080''' to check out website on your computer. Or check your IP address (running the server) and have a friend check out the website by entering '''http://YOURIPADDRESSSERVERISON:8080'''
 
 ##Libraries, References & Styling
-We found an example of typical To Do list functionality regarding simple HTML and some client-side javascript for adding the close tags at: [W3Schools To Do List](http://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_todo)
+We found an example of typical To Do list functionality regarding simple HTML, CSS styling and some client-side javascript for adding the close tags at: [W3Schools To Do List](http://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_todo)
 
 We consulted our teacher's API example for help with GET and POST requests on the server side:
 [Student API Example Endpoints](https://github.com/web-advanced-fall-2016/students-api-endpoints)
 
 We also consulted several Stack Exchange articles on how to splice items from a list in the correct way:
-[Remove Item from Array by Value](http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value)
-[Remove Array Element Based on Object Property](http://stackoverflow.com/questions/15287865/remove-array-element-based-on-object-property)
-[How to Delete an Iterm from an Array of Objects](http://stackoverflow.com/questions/5629914/how-to-delete-an-item-from-array-of-objects)
++[Remove Item from Array by Value](http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value)
++[Remove Array Element Based on Object Property](http://stackoverflow.com/questions/15287865/remove-array-element-based-on-object-property)
++[How to Delete an Iterm from an Array of Objects](http://stackoverflow.com/questions/5629914/how-to-delete-an-item-from-array-of-objects)
 
 ## Client-Server Interaction
 
