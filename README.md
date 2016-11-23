@@ -24,11 +24,12 @@ Before trying to run the code, you must download the following dependencies from
 + bodyParser
 + path
 
-When all dependencies have been installed, navigate to the folder in terminal and type '''node server.js'''
-to start the server on localhost:8080.
+When all dependencies have been installed, navigate to the folder in terminal and type `node server.js`
+to start the server on `localhost:8080`.
 
 Open a web browser of your choice and navigate to 
-'''http://localhost:8080''' to check out website on your computer. Or check your IP address (running the server) and have a friend check out the website by entering '''http://YOURIPADDRESSSERVERISON:8080'''
+`http://localhost:8080`
+to check out website on your computer. Or check your IP address (running the server) and have a friend check out the website by entering `http://YOURIPADDRESSSERVERISON:8080`
 
 ##Libraries, References & Styling
 We found an example of typical To Do list functionality regarding simple HTML, CSS styling and some client-side javascript for adding the close tags at: [W3Schools To Do List](http://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_todo)
