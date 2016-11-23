@@ -7,12 +7,12 @@
 4. Refresh the page and retrieve your To Do List stored on the server whenever needed
 
 ##API Endpoints 
-| Verb	        | URL           | Description  |
-| ------------- |:-------------:| -----:|
-| USE  		    | /test		    | Sends a test message to the client |
-| GET	        | /initial      |   Gets the intial list of To Do Items, each has a name and ID |
-| POST 		    | /addItem      |    Adds an Item with name and ID to the To Do List |
-| POST 		    | /closeItem    |    Deletes an Item with the ID sent from the client from the To Do List |
+| Verb	        | URL           | Description  | Response Structure
+| ------------- |:-------------:| :-----:|-----------:|
+| USE  		    | /test		    | Sends a test message to the client | Object |
+| GET	        | /initial      |   Gets the intial list of To Do Items, each has a name and ID | Structure with Inital To Do List Items |
+| POST 		    | /addItem      |    Adds an Item with name and ID to the To Do List | Structure with Updated To Do List Array |
+| POST 		    | /closeItem    |    Deletes an Item with the ID sent from the client from the To Do List | Structure with Updated To Do List Array |
 
 
 ##How to Run this Code
