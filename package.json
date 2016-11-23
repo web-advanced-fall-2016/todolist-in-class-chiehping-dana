@@ -1,24 +1,25 @@
 {
-    "name": "todo-list",
+    "name": "Dana and Chieh-Ping's To Do List",
     "version": "1.0.0",
-    "description": "This is a pair programming class assignment.",
-    "main": "app.js",
+    "description": "This is a to do list application that uses a dataset stored in server.js to serve a client website. It updates the client site automatically when items are added and deleted, saving the list to the server and reloading on page refresh.",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node app.js"
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/web-advanced-fall-2016/todolist.git"
+        "url": "git+https://github.com/web-advanced-fall-2016/todolist-in-class-chiehping-dana.git"
     },
-    "author": "Saman Tehrani",
+    "author": "Dana & Chieh-Ping",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/web-advanced-fall-2016/todolist/issues"
+        "url": "https://github.com/web-advanced-fall-2016/todolist-in-class-chiehping-dana/issues"
     },
-    "homepage": "https://github.com/web-advanced-fall-2016/todolist#readme",
+    "homepage": "https://github.com/web-advanced-fall-2016/todolist-in-class-chiehping-dana/blob/master/README.md",
     "dependencies": {
         "body-parser": "~1.15.1",
-        "express": "~4.13.4"
+        "express": "~4.13.4", 
+        "path": "~0.12.7"
     }
 }

@@ -11,84 +11,72 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 var initialData = [{
-        "name": "Awesome Apple Yo",
+        "name": "Mow the Lawn",
         "id":0
     },
     {
-        "name": "Bodacious Banana Man",
+        "name": "Get a life",
         "id":1 
     },
     {
-        "name": "Original Orange Friend",
+        "name": "Clean the Floor",
         "id":2
     },
     {
-        "name": "Gargantuous Grapefruit Party",
+        "name": "Buy Some Thai Food",
         "id":3
     }
 
 ];
 
-
-
 var port = process.env.PORT || 8080;        // set our port
 
-// ROUTES FOR OUR API
-// =============================================================================
-//var router = express.Router();              // get an instance of the express Router
 
-// middleware to use for all requests
+//////////// middleware to use for all requests
+
 app.use(function(req, res, next) {
-    // do logging
+    // Do Logging on every request
     console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+    next(); // Go on to the next item
 });
 
-// // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-// app.get('/', function(req, res) {
-//     res.json(initialData);   
-// });
+//Api for Connection test, prints success on the Client
+app.use('/test' , function(req,res){
+  res.json({message:"success"});
+} );
 
-app.get('/api' , function(req,res,next){
+//Api to get the Initial Items from the Server
+app.get('/initial' , function(req,res){
 	res.json(initialData);
-    next();
 });
 
-app.post('/api1', function(req, res){
+//API for Adding an Item, Takes in an object with 
+//name/id from client and returns an updated initial Data array
+app.post('/addItem', function(req, res){
    console.log(req.body);
    initialData.push(req.body);
    console.log(initialData);
+   res.json(initialData);
 });
 
-app.post('/close', function(req, res){
+//API for Closing an Item, takes an object with ID# and returns an updated
+//Initial Array to send to client
+app.post('/closeItem', function(req, res){
    console.log(req.body);
    console.log(req.body.id);
    removeItem(req.body.id);
    console.log("removing " + req.body.id);
    console.log(initialData);
+   res.json(initialData);
 });
-app.get('/close', function(req,res){
-    res.json(initialData);
-    console.log(initialData);
-})
 
+
+//function to remove an item from the array. Takes in an ID from /CloseItem
+//API Post Method
 function removeItem(id) {
-  // let tempArray = [];
  
-//Using Index Of Method -- Not Quite Working
-// initialData.splice(_.findIndex(initialData, function(item) {
-//     return item.id === id;
-// }), 1);
-
- // for (item of initialData){
- // if (item.id == id) {
- //      initialData = initialData.splice(item);
- //        console.log('New list is: ' + initialData);
- //    } else if (item.id != id) {
- //        console.log(item + 'does not exit and can not be deleted');
- //    }
- //  }
-//  //  return initialData;
+/////Trying with a loop through the data and a splice function
+//METHOD 1 ----------
 // let tempArray = [];
 // for (item of initialData) {
 //   console.log("the item id's are" + item.id);
@@ -97,42 +85,41 @@ function removeItem(id) {
 //     console.log("the item is: " + item.id + " " +item.name);
 //     tempArray = initialData.splice(item, 1); 
 //     console.log('New Array is' + tempArray);
-//     // reIndex(id, tempArray);
-//     initialData = initialData.slice(tempArray, 1);
+//     reIndex(id, tempArray);
+//     initialData = tempArray;
 //   }
 // }
-//  return initialData;
+//--------------
 
+//METHOD 2 ----------------
+//Working the best, but issue is that clicking the top close
+//Button is only way to close added items. Something wrong
+//With the index.
 for(var i=0; i<initialData.length; i++){
         if(initialData[i].id == id){
-            initialData.splice(id, 1);
-              //removes 1 element at position i 
-           reIndex(initialData[i], initialData);
-
+            initialData.splice(initialData[i].id, 1);
+              //removes 1 element at position id 
+           reIndex(id, initialData); //trying to reindex the array after every delete.
             break;
         }
     }
-
 console.log(initialData);
 
-//array to reIndex
-function reIndex(key, array) {
+
+//ReIndex Array Function (for Method 1 & 2) (to be called on each deleteItem) ---
+function reIndex(id, array) {
   var result = [];
   console.log("mew");
-  for (var key in array) {
-    result.push(array[key]);
-    return result;
+  for (id in array) {
+    result.push(array[id]);
     console.log("the result is " + result);
   }
+  return result;
+  initialData = result;
 }
+//-----------------------------------------------
 
-
-// //WORKING POORLY - Issue with Index vs. ID
-//  initialData.splice(id,1);
-// console.log("removed data is " + initialData);
-
-
-//Trying with Reg Exp -- DIDN"T WORK
+//Trying with Reg Exp for the ID -- Not Working
   // if(!id) {
   //   return initialData;
   // }
@@ -147,32 +134,10 @@ function reIndex(key, array) {
   // console.log(initialData);
 }
 
-
-app.get('/api1', function(req,res,next){
-    res.json(initialData);
-    console.log(initialData);
-
-    // let result = res.json;
-    // initialData.push(result);
-    // console.log(result);
-    // console.log("testing" + initialData)
-    // console.log("testing" + initialData[4]);
-})
-
-
-app.use('/apio' , function(req,res,next){
-	res.json({message:"success"});
-} );
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-
-
 // START THE SERVER
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
-
-
 
 
 

@@ -36,171 +36,78 @@ window.onload = function() {
 };
 
 
-
-
-
 function getInitialItems() {
-    let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
-
-    let request = new Request(`${baseURL}/api`, config);
-    fetch(request)
-        .then(function(res) {
-
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            // populatestudentID(res);
-            console.log(res);
-
+    $.ajax({
+        method:"GET",
+        url: baseURL + `/initial`
+    }).done(function(res){
+        console.log('Got the initial items.');
+        console.log(res);
             for (i = 0; i < res.length; i++) {
                 console.log(res[i]);
                 initialItems.push(res[i]);
             }
             createList();
-            createCloseButton();
-        })
+            createCloseButton();    
+    })
 
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
-}
+};
 
+//AJAX GET & POST REQUESTS TO TALK TO SERVER
+
+//Test the Connection
 function testConnection() {
-    let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
 
-    let request = new Request(`${baseURL}/apio`, config);
-    fetch(request)
-        .then(function(res) {
+ $.ajax({
+        method:"GET",
+        url: baseURL + `/test`
+    }).done(function(res){
+        console.log("Test result is " + res.message);
 
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            // populatestudentID(res);
-            console.log(res);
-        })
-
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
+})
 }
 
+//Add an Item, Called on Clicking Add Button, Takes Input Value & ID object
 function addItem(data) {
-  $.ajax({
-    type: "POST",
-    url: baseURL + '/api1',
-    data: data,
-    success: console.log(data + "was sent to server")
-  });
 
-  let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
-  let request = new Request(`${baseURL}/api1`, config);
-  fetch(request)
-        .then(function(res) {
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            console.log("The result is" + res);
-            refreshList(res);
-        })
-
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
-
+ $.ajax({
+        method:"POST",
+        url: baseURL + `/addItem`,
+        data: data
+    }).done(function(res){
+        console.log(data + " was sent to server");
+        console.log("The result is " + res);
+        refreshList(res);
+});
 }
 
+//Delete an Item from the Server
 function deleteFromServer(id) {
-  $.ajax({
-    type: "POST",
-    url: baseURL + '/close',
-    data: {"id":id},
-    success: console.log(id + " was sent to server")
-  });
-
-let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
-
-    let request = new Request(`${baseURL}/close`, config);
-    fetch(request)
-        .then(function(res) {
-
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            // populatestudentID(res);
-          refreshList(res);
-        })
-
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
-
-
+ $.ajax({
+        method:"POST",
+        url: baseURL + `/closeItem`,
+        data: {"id":id}
+    }).done(function(res){
+        console.log(id + " was sent to server");
+        refreshList(res);
+        
+});
 }
 
+//FUNCTIONS TO HANDLE INCOMING & OUTGOING DATA ON CLIENT SIDE
 
+//Create the List Upon Load or Reload
 function createList() {
     console.log("creatinglist...");
     var list = document.querySelector('ul');
     // var li = document.createElement('li');
-
     for (item of initialItems) {
         list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
     }
-
-  let config = {
-        method: 'GET',
-        headers: new Headers({}),
-    };
-  let request = new Request(`${baseURL}/api1`, config);
-  fetch(request)
-        .then(function(res) {
-            if (res.status == 200)
-                return res.json();
-            else
-                throw new Error('Something went wrong on api server!');
-        })
-        .then(function(res) {
-            console.log("The result is" + res);
-            refreshList(res);
-        })
-
-    .catch(function(err) {
-        console.warn(`Couldn't fetch info list`);
-        console.log(err);
-    });
-
 }
 
-
-
+//Refresh the list. Called after each Add Item or Delete Item Request
+//To Stay in sync with the Server Database
 function refreshList(data) {
   updatedList = data;
   console.log(updatedList);
@@ -210,23 +117,16 @@ function refreshList(data) {
     for (item of updatedList) {
         list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
     } 
-      // console.log("refreshing list...");
-      // console.log(data);
-      // var list = document.querySelector('ul');
-      // var text = document.createTextNode(data.name);
-      // var item = document.createElement("li");
-      // item.append(text);
-      // item.id = data.id;
-      // list.appendChild(item);
       createCloseButton();
 }
 
-// Create a new list item when clicking on the "Add" button
+// Prepare Information to Send to the Add Item AJAX Post.
+//If they didn't write anything, make an alert.
+//Run from a Event Listener on the Add Button in the Index
 function newElement() {
     var li = document.createElement("li");
     var inputValue = document.getElementById("myInput").value;
     var nextID = parseInt(document.getElementById("myUL").lastChild.id) + 1;
-    
     console.log(nextID);
 
     if (inputValue === '') {
@@ -234,38 +134,12 @@ function newElement() {
     } else {
           newItem = { name: inputValue, id: nextID };
           addItem(newItem);
+          var inputValue = '';
           console.log(nextID);
-        // document.getElementById("myUL").appendChild(li);
-    }
-
-
-    // var t = document.createTextNode(inputValue);
-    // li.appendChild(t);
-    // if (inputValue === '') {
-    //     alert("You must write something!");
-    // } else {
-    //     document.getElementById("myUL").appendChild(li);
-    // }
-    // document.getElementById("myInput").value = "";
-
-    // var span = document.createElement("SPAN");
-    // var txt = document.createTextNode("\u00D7");
-    // span.className = "close";
-    // span.appendChild(txt);
-    // li.appendChild(span);
-
-    // for (i = 0; i < close.length; i++) {
-    //     close[i].onclick = function() {
-    //         var div = this.parentElement;
-    //         div.style.display = "none";
-    //     }
-    // }
+              }
 }
 
-
-
 // Create a "close" button and append it to each list item
-
 function createCloseButton() {
 var myNodelist = document.getElementsByTagName("LI");
 var i;
@@ -285,52 +159,10 @@ for (i = 0; i < myNodelist.length; i++) {
 }
 }
 
+//Run the Delete Function from Server Post Request with ID sent in
 function closeItem(id){
   console.log("the id of the thing to close is" + id);
   deleteFromServer(id);
 
 }
 
-
-// function addEventListener() {
-//         var input = document.querySelector('input');
-//         input.addEventListener('input', handleInput, false);
-//         searchResults.addEventListener('click', function(evnt) {
-//             console.log(evnt.target.dataset.id);
-//             populateRecord(evnt.target.dataset.id);
-//         });
-
-//     }
-
-
-// function closeItem() {
-// var thisElement = 
-
-// var i;
-// for (i = 0; i < close.length; i++) {
-//     close[i].onclick = function() {
-//         var div = this.parentElement;
-//         div.style.display = "none";
-//         console.log(div);
-//     }
-// }
-
-
-// }
-
-// Click on a close button to hide the current list item
-//get the id of the thing clicked on
-//send a post request that deletes it
-//rerun the refresh list item
-
-
-
-
-
-// // Add a "checked" symbol when clicking on a list item
-// var list = document.querySelector('ul');
-// list.addEventListener('click', function(ev) {
-//     if (ev.target.tagName === 'LI') {
-//         ev.target.classList.toggle('checked');
-//     }
-// }, false);
