@@ -8,7 +8,7 @@
 
 ##API Endpoints 
 | Verb	        | URL           | Description  | Response Structure
-| ------------- |:-------------:| :-----:|-----------:|
+| ------------- |:-------------:| :-----:|:-----------:|
 | USE  		    | /test		    | Sends a test message to the client | Object |
 | GET	        | /initial      |   Gets the intial list of To Do Items, each has a name and ID | Structure with Inital To Do List Items |
 | POST 		    | /addItem      |    Adds an Item with name and ID to the To Do List | Structure with Updated To Do List Array |
