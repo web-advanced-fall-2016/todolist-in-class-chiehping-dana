@@ -6,6 +6,15 @@
 3. Delete a Completed To Do Item
 4. Refresh the page and retrieve your To Do List stored on the server whenever needed
 
+##API Endpoints 
+| Verb	        | URL           | Description  |
+| ------------- |:-------------:| -----:|
+| USE  		    | /test		    | Sends a test message to the client |
+| GET	        | /initial      |   Gets the intial list of To Do Items, each has a name and ID |
+| POST 		    | /addItem      |    Adds an Item with name and ID to the To Do List |
+| POST 		    | /closeItem    |    Deletes an Item with the ID sent from the client from the To Do List |
+
+
 ##How to Run this Code
 Clone or download and unzip the contents of this folder onto your computer. 
 
