@@ -35,17 +35,6 @@ window.onload = function() {
     testConnection();
 };
 
-window.onbeforeunload = saveItems;
-function saveItems() {
-$.ajax({
-        method:"POST",
-        url: baseURL + `/save`,
-        data: {save:"okay"}
-    }).done(function(res){
-        console.log("data was saved to server");
-});
-    return null;
-}
 
 
 function getInitialItems() {

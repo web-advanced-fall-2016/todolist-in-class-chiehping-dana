@@ -3,6 +3,8 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var path = require('path');
+var db = require('./db.js');
+
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -10,23 +12,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-var initialData = [{
-        "name": "Mow the Lawn",
-        "id":0
-    },
-    {
-        "name": "Get a life",
-        "id":1 
-    },
-    {
-        "name": "Clean the Floor",
-        "id":2
-    },
-    {
-        "name": "Buy Some Thai Food",
-        "id":3
-    }
+var initialData = [
+// {
+//         "name": "Mow the Lawn",
+//         "id":0
+//     },
+//     {
+//         "name": "Get a life",
+//         "id":1 
+//     },
+//     {
+//         "name": "Clean the Floor",
+//         "id":2
+//     },
+//     {
+//         "name": "Buy Some Thai Food",
+//         "id":3
+//     }
 
 ];
 
@@ -48,27 +50,38 @@ app.use('/test' , function(req,res){
 
 //Api to get the Initial Items from the Server
 app.get('/initial' , function(req,res){
-	res.json(initialData);
+	let initialData = db.getItemList();
+  res.json(initialData);
+  console.log(initialData);
+  db.items = initialData;
 });
+
 
 //API for Adding an Item, Takes in an object with 
 //name/id from client and returns an updated initial Data array
 app.post('/addItem', function(req, res){
    console.log(req.body);
-   initialData.push(req.body);
-   console.log(initialData);
-   res.json(initialData);
+   db.items.push(req.body);
+   console.log(db.items);
+   res.json(db.items);
+   db.saveItemList(db.items);
+  console.log("db is" + db.items);
+
 });
 
 //API for Closing an Item, takes an object with ID# and returns an updated
 //Initial Array to send to client
 app.post('/closeItem', function(req, res){
-   console.log(req.body);
-   console.log(req.body.id);
    removeItem(req.body.id);
    console.log("removing " + req.body.id);
-   console.log(initialData);
-   res.json(initialData);
+   let index = db.items.indexOf(req.body.id);
+   for (item of db.items) {
+    console.log("The index of the items is: " + db.items.indexOf(item));
+   }
+   // console.log(index);
+   console.log(db.items);
+   res.json(db.items);
+   db.saveItemList(db.items);
 });
 
 
@@ -96,28 +109,44 @@ function removeItem(id) {
 //Working the best, but issue is that clicking the top close
 //Button is only way to close added items. Something wrong
 //With the index.
-for(var i=0; i<initialData.length; i++){
-        if(initialData[i].id == id){
-            initialData.splice(initialData[i].id, 1);
-              //removes 1 element at position id 
-           reIndex(id, initialData); //trying to reindex the array after every delete.
-            break;
-        }
-    }
-console.log(initialData);
+
+for (item of db.items) {
+  console.log (item.id);
+  console.log (id);
+  if (item.id == parseInt(id)) {
+    console.log ("thing to get rid of is: " + item);
+    let index = db.items.indexOf(item);
+    console.log("the index is: " + index);
+    db.items.splice(index, 1);
+    console.log("new index is: " + index);
+    
+  }
+}
+
+// for(var i=0; i<db.items.length; i++){
+//         if(db.items[i].id == id){
+//           let index = db.items.indexOf(db.items[i]);
+//           console.log("the index is" + index);
+//             db.items.splice(db.items[i].id, 1);
+//               //removes 1 element at position id 
+//            // reIndex(id, initialData); //trying to reindex the array after every delete.
+//             break;
+//         }
+//     }
+console.log("DB" + db.items);
 
 
 //ReIndex Array Function (for Method 1 & 2) (to be called on each deleteItem) ---
-function reIndex(id, array) {
-  var result = [];
-  console.log("mew");
-  for (id in array) {
-    result.push(array[id]);
-    console.log("the result is " + result);
-  }
-  return result;
-  initialData = result;
-}
+// function reIndex(id, array) {
+//   var result = [];
+//   console.log("mew");
+//   for (id in array) {
+//     result.push(array[id]);
+//     console.log("the result is " + result);
+//   }
+//   return result;
+//  db.items = result;
+// }
 //-----------------------------------------------
 
 //Trying with Reg Exp for the ID -- Not Working
