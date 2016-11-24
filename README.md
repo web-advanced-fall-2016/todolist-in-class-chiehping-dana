@@ -71,7 +71,7 @@ The full website is hosted by the server over a website wide API located at '/' 
 ##Bugs & Things to Improve
 We solved our biggest bug with the `deleteItem()` function not removing the correct item.
 
-Now our bug is that when all items are deleted from the To Do List, adding a new item won't work.
+We solved our edge case of new items not being added when the to do list is fully empty. Now it works
 
 We'd also like to explore incorporating MongoDB and Mongoose and are planning to follow the following example to see if we can get it to work at a later date (since both of us want to work with servers for other classes): 
 
