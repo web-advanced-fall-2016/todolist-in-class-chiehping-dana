@@ -15,52 +15,27 @@ var newItem;
 //so that always showing the up to date array in server -- DONE
 
 
-//Why isn't this working with our code??? 
-// (function() {
-
-//     if (document.readyState != "loading") {
-//      testConnection();
-//     getInitialItems();
-//     } else {
-//         document.addEventListener('DOMContentLoaded', function() {
-//         testConnection();
-//     getInitialItems();
-//         }, false);
-//     }
-
-
 window.onload = function() {
     // addEventListener();
     getInitialItems();
     testConnection();
 };
 
-window.onbeforeunload = saveItems;
-function saveItems() {
-$.ajax({
-        method:"POST",
-        url: baseURL + `/save`,
-        data: {save:"okay"}
-    }).done(function(res){
-        console.log("data was saved to server");
-});
-    return null;
-}
 
 
 function getInitialItems() {
     $.ajax({
-        method:"GET",
+        method: "GET",
         url: baseURL + `/initial`
-    }).done(function(res){
+    }).done(function(res) {
         console.log('Got the initial items.');
         console.log(res);
-            for (i = 0; i < res.length; i++) {
-                console.log(res[i]);
-                initialItems.push(res[i]);
-            }
-            createList();
-            createCloseButton();    
+        for (i = 0; i < res.length; i++) {
+            console.log(res[i]);
+            initialItems.push(res[i]);
+        }
+        createList();
+        createCloseButton();
     })
 
 };
@@ -70,40 +45,40 @@ function getInitialItems() {
 //Test the Connection
 function testConnection() {
 
- $.ajax({
-        method:"GET",
+    $.ajax({
+        method: "GET",
         url: baseURL + `/test`
-    }).done(function(res){
+    }).done(function(res) {
         console.log("Test result is " + res.message);
 
-})
+    })
 }
 
 //Add an Item, Called on Clicking Add Button, Takes Input Value & ID object
 function addItem(data) {
 
- $.ajax({
-        method:"POST",
+    $.ajax({
+        method: "POST",
         url: baseURL + `/addItem`,
         data: data
-    }).done(function(res){
+    }).done(function(res) {
         console.log(data + " was sent to server");
         console.log("The result is " + res);
         refreshList(res);
-});
+    });
 }
 
 //Delete an Item from the Server
 function deleteFromServer(id) {
- $.ajax({
-        method:"POST",
+    $.ajax({
+        method: "POST",
         url: baseURL + `/closeItem`,
-        data: {"id":id}
-    }).done(function(res){
+        data: { "id": id }
+    }).done(function(res) {
         console.log(id + " was sent to server");
         refreshList(res);
-        
-});
+
+    });
 }
 
 
@@ -122,15 +97,15 @@ function createList() {
 //Refresh the list. Called after each Add Item or Delete Item Request
 //To Stay in sync with the Server Database
 function refreshList(data) {
-  updatedList = data;
-  console.log(updatedList);
-  console.log("new list refresh");
-  var list = document.querySelector('ul');
-  list.innerHTML = "";
-    for (item of updatedList) {
+    initialItems = data;
+    console.log(initialItems);
+    console.log("new list refresh");
+    var list = document.querySelector('ul');
+    list.innerHTML = "";
+    for (item of initialItems) {
         list.innerHTML += "<li id=' " + item.id + "'>" + item.name + "</li>";
-    } 
-      createCloseButton();
+    }
+    createCloseButton();
 }
 
 // Prepare Information to Send to the Add Item AJAX Post.
@@ -139,43 +114,52 @@ function refreshList(data) {
 function newElement() {
     var li = document.createElement("li");
     var inputValue = document.getElementById("myInput").value;
-    var nextID = parseInt(document.getElementById("myUL").lastChild.id) + 1;
-    console.log(nextID);
-
+    console.log("length is" + initialItems.length);
+    
     if (inputValue === '') {
         alert("You must write something!");
     } else {
-          newItem = { name: inputValue, id: nextID };
-          addItem(newItem);
-          var inputValue = '';
-          console.log(nextID);
-              }
+        
+        if (initialItems.length > 0) {
+            var nextID = parseInt(document.getElementById("myUL").lastChild.id) + 1;
+            newItem = { name: inputValue, id: nextID };
+            addItem(newItem);
+            inputValue = '';
+            console.log(nextID);
+        } else {
+            var newID = 0 ;
+            newItem = { name: inputValue, id: newID };
+            addItem(newItem);
+            inputValue = '';
+            console.log(newID);
+
+        }
+    }
 }
 
 // Create a "close" button and append it to each list item
 function createCloseButton() {
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-    var span = document.createElement("SPAN");
-    var txt = document.createTextNode("\u00D7");
-    span.className = "close";
-    span.appendChild(txt);
-    myNodelist[i].appendChild(span);
-    span.addEventListener('click', function(ev) {
-      if (ev.target.parentElement.nodeName === 'LI') {
-        console.log(ev.target.parentElement.id);
-        let currentItem = ev.target.parentElement.id;
-        closeItem(currentItem);
-      }
-    })
-}
+    var myNodelist = document.getElementsByTagName("LI");
+    var i;
+    for (i = 0; i < myNodelist.length; i++) {
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        myNodelist[i].appendChild(span);
+        span.addEventListener('click', function(ev) {
+            if (ev.target.parentElement.nodeName === 'LI') {
+                console.log(ev.target.parentElement.id);
+                let currentItem = ev.target.parentElement.id;
+                closeItem(currentItem);
+            }
+        })
+    }
 }
 
 //Run the Delete Function from Server Post Request with ID sent in
-function closeItem(id){
-  console.log("the id of the thing to close is" + id);
-  deleteFromServer(id);
+function closeItem(id) {
+    console.log("the id of the thing to close is" + id);
+    deleteFromServer(id);
 
 }
-
